@@ -1,7 +1,10 @@
+import Card from './components/Card'
 import './App.css'
 
 function App() {
- return <h1></h1>
+    return <div className='h-screen overflow-hidden' id='game'>
+            <Card/>
+    </div>
 }
 
 export default App
