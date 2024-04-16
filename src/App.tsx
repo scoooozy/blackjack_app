@@ -1,25 +1,20 @@
 import Card from './components/Card'
 import './App.css'
-import { useState } from 'react'
-import { getRandomCard } from './utils'
+
+import CardPlacement from './components/CardPlacement'
 
 function App() {
-    const [currentCard, setCurrentCard] = useState<(string | number)[]>([])
-    const handleRandomCard = () => {
-        const randomCard = getRandomCard();
-        setCurrentCard([...randomCard]);
-    }
+
 
     return <div className='h-screen overflow-hidden gap-5' id='game'>
-        <button className='btn-primary bg-blue-800' onClick={handleRandomCard}>
-            Random card  for me!!!!!!
-        </button>
+        <div className="grid grid-cols-3 grid-rows-3 place-items-center">
+            <CardPlacement className='col-start-2' />
+            <CardPlacement className='col-start-1' />
+            <CardPlacement className='col-start-3 ' />
+            <CardPlacement className='row-start-3 col-start-2' />
+        </div>
 
-       {
-        currentCard.length > 0 && (
-            <Card cardLabel={currentCard[0]} cardSuit={currentCard[1] as number}/>
-        )
-       }
+
     </div>
 }
 
