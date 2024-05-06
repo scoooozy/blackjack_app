@@ -14,11 +14,15 @@ import hearts from "../assets/images/cards/hearts.png"
 import spades from "../assets/images/cards/spades.png"
 import clsx from "clsx"
 import { Suits } from "../utils";
+import {gsap} from "gsap"
+import { CSSProperties, useEffect } from "react"
+import { useRef } from "react"
 
 interface ICardProps {
     cardLabel: string | number;
     cardSuit: Suits; 
     className ? : string,
+    style: CSSProperties
 }
 
 const getCardImageBasedOnSuit = (suit: Suits) => {
@@ -36,11 +40,33 @@ const getCardImageBasedOnSuit = (suit: Suits) => {
 
 
 //c onst Card:React.FC<ICardProps>
-const Card = ({ cardSuit, cardLabel,className}: ICardProps) => {
+const Card = ({ cardSuit, cardLabel,className, style}: ICardProps) => {
+    const ref = useRef(null);
 
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            if(ref.current) {
+                gsap.fromTo(
+                    ref.current, 
+                    {
+                        x: 0, 
+                        y: -100
+                    }, 
+                    {
+                        x:  0,
+                        y: 0,
+                        duration: 1,
+                        ease: "elastic.out(1, 0.3)"
+                    }
+                )
+            }
+        })
+
+        return () => ctx.revert()
+    }, [])
 
     return (
-        <div className={clsx( className , `flex bg-white border rounded-md w-32 h-44 p-2 ${cardSuit == Suits.Diamonds || cardSuit == Suits.Hearts ? "text-red-600" : "text-black" }`) }>
+        <div ref={ref} style={style} className={clsx( className , `flex bg-white border rounded-md w-32 h-44 p-2 ${cardSuit == Suits.Diamonds || cardSuit == Suits.Hearts ? "text-red-600" : "text-black" }`) }>
             <div className={` flex justify-start items-center flex-col`} >
                 <h3 className="font-bold text-2xl">{cardLabel}</h3>
                 <p><img className="w-5 h-5" src={getCardImageBasedOnSuit(cardSuit)} alt="Card suit" /></p>
